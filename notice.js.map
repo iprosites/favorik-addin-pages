@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/notice/notice.ts"],
+  "sourcesContent": ["// Generic \"show a message, wait for OK\" dialog \u2014 used for the multi-select case (D1), where\n// there's no resolvable mailbox item to attach a notificationMessages bar to, so\n// Office.context.ui.displayDialogAsync is the only way to tell the user anything at all.\n\nOffice.onReady(() => {\n  const params = new URLSearchParams(window.location.search);\n  const message = params.get(\"message\") ?? \"\";\n  const messageEl = document.getElementById(\"message\") as HTMLDivElement;\n  messageEl.textContent = message;\n\n  const okButton = document.getElementById(\"okButton\") as HTMLButtonElement;\n  okButton.addEventListener(\"click\", () => Office.context.ui.messageParent(\"ok\"));\n});\n"],
+  "mappings": ";;;AAIA,SAAO,QAAQ,MAAM;AACnB,UAAM,SAAS,IAAI,gBAAgB,OAAO,SAAS,MAAM;AACzD,UAAM,UAAU,OAAO,IAAI,SAAS,KAAK;AACzC,UAAM,YAAY,SAAS,eAAe,SAAS;AACnD,cAAU,cAAc;AAExB,UAAM,WAAW,SAAS,eAAe,UAAU;AACnD,aAAS,iBAAiB,SAAS,MAAM,OAAO,QAAQ,GAAG,cAAc,IAAI,CAAC;AAAA,EAChF,CAAC;",
+  "names": []
+}

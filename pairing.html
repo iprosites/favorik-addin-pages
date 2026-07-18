@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Pair Favorik Companion</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <style>
+    body { font-family: "Segoe UI", sans-serif; font-size: 14px; margin: 16px; }
+    label { display: block; margin-bottom: 6px; }
+    input { width: 100%; box-sizing: border-box; padding: 6px; font-size: 14px; }
+    .buttons { margin-top: 12px; text-align: right; }
+    button { padding: 6px 16px; margin-left: 8px; }
+  </style>
+  <script src="pairing.js"></script>
+</head>
+<body>
+  <label for="code">Enter the pairing code shown in Favorik Companion's Options window:</label>
+  <input id="code" type="text" autocomplete="off" autofocus />
+  <div class="buttons">
+    <button id="cancelButton">Cancel</button>
+    <button id="okButton">OK</button>
+  </div>
+</body>
+</html>
