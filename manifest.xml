@@ -12,7 +12,7 @@
        Companion at https://localhost:48766 — see src/shared/api.ts, which is NOT rewritten by
        this URL substitution and always targets Companion's local API regardless of where this
        static shell was loaded from. -->
-  <Id>a6f2c8e4-1b3d-4f7a-9c2e-5d8b6a4f1e0c</Id>
+  <Id>3e9b7e38-b166-4a71-8063-8ce50874804c</Id>
   <Version>2.0.0.0</Version>
   <ProviderName>Triad Fire Consultants</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
