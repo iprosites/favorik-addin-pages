@@ -33,10 +33,13 @@
       <Set Name="Mailbox" MinVersion="1.13" />
     </Sets>
   </Requirements>
+  <!-- Required by the base OfficeApp schema even for a command-only add-in with no taskpane —
+       these dimensions are never actually used since nothing here calls ShowTaskpane. -->
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
         <SourceLocation DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+        <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
   </FormSettings>
@@ -67,11 +70,6 @@
             <OfficeTab id="TabDefault">
               <Group id="msgReadGroup">
                 <Label resid="GroupLabel" />
-                <Icon>
-                  <bt:Image size="16" resid="icon-attachment-16" />
-                  <bt:Image size="32" resid="icon-attachment-32" />
-                  <bt:Image size="80" resid="icon-attachment-80" />
-                </Icon>
                 <Control xsi:type="Menu" id="favorikMenuRead">
                   <Label resid="MenuLabel" />
                   <Supertip>
@@ -140,11 +138,6 @@
             <OfficeTab id="TabDefault">
               <Group id="msgComposeGroup">
                 <Label resid="GroupLabel" />
-                <Icon>
-                  <bt:Image size="16" resid="icon-attachment-16" />
-                  <bt:Image size="32" resid="icon-attachment-32" />
-                  <bt:Image size="80" resid="icon-attachment-80" />
-                </Icon>
                 <Control xsi:type="Menu" id="favorikMenuCompose">
                   <Label resid="MenuLabel" />
                   <Supertip>
