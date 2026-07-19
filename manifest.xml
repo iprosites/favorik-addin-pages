@@ -12,7 +12,7 @@
        Companion at https://localhost:48766 — see src/shared/api.ts, which is NOT rewritten by
        this URL substitution and always targets Companion's local API regardless of where this
        static shell was loaded from. -->
-  <Id>87a20ff3-b191-4c95-8001-100e880f6c61</Id>
+  <Id>48dde985-6f05-4185-b7c9-4c7131a4109c</Id>
   <Version>2.0.0.0</Version>
   <ProviderName>Triad Fire Consultants</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
@@ -29,14 +29,13 @@
   </Hosts>
   <Requirements>
     <Sets>
-      <!-- Diagnostic 2026-07-18: relaxed from 1.13 to rule out this specific mailbox not
-           supporting that requirement set as the cause of a persistent, otherwise-unexplained
-           sideload failure — a control test (Microsoft's own hello-world sample, which only
-           requires 1.1) installed successfully on the same tenant where this manifest kept
-           failing. D1's multi-select surfacing is a nice-to-have, not core functionality — the
-           runtime detection in commands.ts already handles "no resolvable item" regardless of
-           how it's triggered, so this doesn't need to be pinned high. -->
-      <Set Name="Mailbox" MinVersion="1.5" />
+      <!-- Diagnostic 2026-07-18: relaxed to 1.1 (from 1.13, then 1.5) after systematic
+           bisection — isolated test manifests matching this one's structure (Menu+Items, dual
+           read/compose extension points) installed successfully at 1.1, while this exact
+           manifest failed at 1.5. D1's multi-select surfacing is a nice-to-have, not core
+           functionality — the runtime detection in commands.ts already handles "no resolvable
+           item" regardless of how it's triggered, so this doesn't need to be pinned high. -->
+      <Set Name="Mailbox" MinVersion="1.1" />
     </Sets>
   </Requirements>
   <!-- Required by the base OfficeApp schema even for a command-only add-in with no taskpane —
@@ -59,7 +58,7 @@
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Requirements>
       <bt:Sets DefaultMinVersion="1.3">
-        <bt:Set Name="Mailbox" MinVersion="1.5" />
+        <bt:Set Name="Mailbox" MinVersion="1.1" />
       </bt:Sets>
     </Requirements>
     <Hosts>
