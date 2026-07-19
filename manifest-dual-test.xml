@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xsi:type="MailApp">
+  <!-- DIAGNOSTIC ONLY. Identical to manifest-menu-test.xml (which installed successfully) except
+       it adds a second ExtensionPoint (MessageReadCommandSurface) alongside the existing
+       MessageComposeCommandSurface — isolates whether having BOTH surfaces is what's breaking
+       the real manifest, which is the only remaining untested difference. -->
+  <Id>18d22f15-8e12-4ffc-bf09-367da00d4220</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Triad Fire Consultants</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Favorik Dual Test" />
+  <Description DefaultValue="Diagnostic manifest only." />
+  <IconUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-80.png" />
+  <SupportUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+  <AppDomains>
+    <AppDomain>https://iprosites.github.io</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Mailbox" />
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1" />
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit" />
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.3">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <FunctionFile resid="Commands.Url" />
+
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgReadCmdGroup">
+                <Label resid="CommandsGroup.Label" />
+                <Control xsi:type="Menu" id="favorikTestMenuRead">
+                  <Label resid="MenuLabel" />
+                  <Supertip>
+                    <Title resid="MenuLabel" />
+                    <Description resid="TestButton.Description" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon-16" />
+                    <bt:Image size="32" resid="icon-32" />
+                    <bt:Image size="80" resid="icon-80" />
+                  </Icon>
+                  <Items>
+                    <Item id="testItemOneRead">
+                      <Label resid="TestButton.Label" />
+                      <Supertip>
+                        <Title resid="TestButton.Label" />
+                        <Description resid="TestButton.Description" />
+                      </Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="icon-16" />
+                        <bt:Image size="32" resid="icon-32" />
+                        <bt:Image size="80" resid="icon-80" />
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction">
+                        <FunctionName>openOptions</FunctionName>
+                      </Action>
+                    </Item>
+                  </Items>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+
+          <ExtensionPoint xsi:type="MessageComposeCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgComposeCmdGroup">
+                <Label resid="CommandsGroup.Label" />
+                <Control xsi:type="Menu" id="favorikTestMenuCompose">
+                  <Label resid="MenuLabel" />
+                  <Supertip>
+                    <Title resid="MenuLabel" />
+                    <Description resid="TestButton.Description" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon-16" />
+                    <bt:Image size="32" resid="icon-32" />
+                    <bt:Image size="80" resid="icon-80" />
+                  </Icon>
+                  <Items>
+                    <Item id="testItemOneCompose">
+                      <Label resid="TestButton.Label" />
+                      <Supertip>
+                        <Title resid="TestButton.Label" />
+                        <Description resid="TestButton.Description" />
+                      </Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="icon-16" />
+                        <bt:Image size="32" resid="icon-32" />
+                        <bt:Image size="80" resid="icon-80" />
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction">
+                        <FunctionName>openOptions</FunctionName>
+                      </Action>
+                    </Item>
+                  </Items>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon-16" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-16.png" />
+        <bt:Image id="icon-32" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-32.png" />
+        <bt:Image id="icon-80" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-80.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="CommandsGroup.Label" DefaultValue="Favorik Test" />
+        <bt:String id="MenuLabel" DefaultValue="Favorik" />
+        <bt:String id="TestButton.Label" DefaultValue="Test" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="TestButton.Description" DefaultValue="Diagnostic test button." />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
