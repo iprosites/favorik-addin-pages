@@ -29,8 +29,14 @@
   </Hosts>
   <Requirements>
     <Sets>
-      <!-- Mailbox 1.13+ needed for the multi-select ribbon surface (D1). -->
-      <Set Name="Mailbox" MinVersion="1.13" />
+      <!-- Diagnostic 2026-07-18: relaxed from 1.13 to rule out this specific mailbox not
+           supporting that requirement set as the cause of a persistent, otherwise-unexplained
+           sideload failure — a control test (Microsoft's own hello-world sample, which only
+           requires 1.1) installed successfully on the same tenant where this manifest kept
+           failing. D1's multi-select surfacing is a nice-to-have, not core functionality — the
+           runtime detection in commands.ts already handles "no resolvable item" regardless of
+           how it's triggered, so this doesn't need to be pinned high. -->
+      <Set Name="Mailbox" MinVersion="1.5" />
     </Sets>
   </Requirements>
   <!-- Required by the base OfficeApp schema even for a command-only add-in with no taskpane —
@@ -53,7 +59,7 @@
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Requirements>
       <bt:Sets DefaultMinVersion="1.3">
-        <bt:Set Name="Mailbox" MinVersion="1.13" />
+        <bt:Set Name="Mailbox" MinVersion="1.5" />
       </bt:Sets>
     </Requirements>
     <Hosts>
@@ -62,7 +68,7 @@
           <FunctionFile resid="Commands.Url" />
 
           <!-- Read surface (§3.1). The same "Favorik" menu button also appears in Outlook's
-               multi-select toolbar once Mailbox 1.13 is declared — there is no distinct
+               multi-select toolbar on hosts that support it — there is no distinct
                manifest extension point for multi-select; commands.ts detects that case at
                runtime (Office.context.mailbox.item is unresolvable) and shows the D1 message
                instead of attempting a save. -->
