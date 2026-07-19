@@ -12,7 +12,7 @@
        Companion at https://localhost:48766 — see src/shared/api.ts, which is NOT rewritten by
        this URL substitution and always targets Companion's local API regardless of where this
        static shell was loaded from. -->
-  <Id>48dde985-6f05-4185-b7c9-4c7131a4109c</Id>
+  <Id>8b2521bc-3968-4a7b-a0e0-438a02c9268e</Id>
   <Version>2.0.0.0</Version>
   <ProviderName>Triad Fire Consultants</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
@@ -29,12 +29,14 @@
   </Hosts>
   <Requirements>
     <Sets>
-      <!-- Diagnostic 2026-07-18: relaxed to 1.1 (from 1.13, then 1.5) after systematic
-           bisection — isolated test manifests matching this one's structure (Menu+Items, dual
-           read/compose extension points) installed successfully at 1.1, while this exact
-           manifest failed at 1.5. D1's multi-select surfacing is a nice-to-have, not core
-           functionality — the runtime detection in commands.ts already handles "no resolvable
-           item" regardless of how it's triggered, so this doesn't need to be pinned high. -->
+      <!-- Diagnostic 2026-07-18: after exhaustive bisection, every isolated test manifest that
+           installed successfully left VersionOverrides' inner <bt:Set Name="Mailbox"/> with NO
+           explicit MinVersion (relying on DefaultMinVersion="1.3" below); every failing attempt
+           of this manifest had an explicit MinVersion there, regardless of its value (1.13, 1.5,
+           even 1.1). Testing that specifically now — this outer/root Requirements block is a
+           separate declaration (used for the add-in's Store/basic-requirements listing) and
+           kept at 1.1 for now; only the VersionOverrides-level Set was changed. D1's multi-select
+           surfacing is a nice-to-have, not core functionality either way. -->
       <Set Name="Mailbox" MinVersion="1.1" />
     </Sets>
   </Requirements>
@@ -58,7 +60,7 @@
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Requirements>
       <bt:Sets DefaultMinVersion="1.3">
-        <bt:Set Name="Mailbox" MinVersion="1.1" />
+        <bt:Set Name="Mailbox" />
       </bt:Sets>
     </Requirements>
     <Hosts>
