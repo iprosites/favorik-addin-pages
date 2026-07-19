@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xsi:type="MailApp">
+  <!-- Add-in-only XML manifest (PRD §3.1) — confirmed still fully supported (not deprecated) via
+       Microsoft Learn as of the 2026-05-28 doc revision. D7 correction (2026-07-18): the static
+       shell (this manifest, icons, commands/pairing/notice HTML+JS) is hosted publicly on GitHub
+       Pages because Exchange validates/fetches these URLs from its own servers during sideload —
+       "localhost" is unreachable from there, regardless of the requesting user's machine. All
+       actual functionality (file access, saving, notes) still runs exclusively through
+       Companion at https://localhost:48766 — see src/shared/api.ts, which is NOT rewritten by
+       this URL substitution and always targets Companion's local API regardless of where this
+       static shell was loaded from. -->
+  <Id>37cfd0a5-c412-465c-847a-cd103510869b</Id>
+  <Version>2.0.0.0</Version>
+  <ProviderName>Triad Fire Consultants</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Favorik" />
+  <Description DefaultValue="Save email attachments and project notes to your favorite folders." />
+  <IconUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-80.png" />
+  <SupportUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+  <AppDomains>
+    <AppDomain>https://iprosites.github.io</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Mailbox" />
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <!-- Diagnostic 2026-07-18: after exhaustive bisection, every isolated test manifest that
+           installed successfully left VersionOverrides' inner <bt:Set Name="Mailbox"/> with NO
+           explicit MinVersion (relying on DefaultMinVersion="1.3" below); every failing attempt
+           of this manifest had an explicit MinVersion there, regardless of its value (1.13, 1.5,
+           even 1.1). Testing that specifically now — this outer/root Requirements block is a
+           separate declaration (used for the add-in's Store/basic-requirements listing) and
+           kept at 1.1 for now; only the VersionOverrides-level Set was changed. D1's multi-select
+           surfacing is a nice-to-have, not core functionality either way. -->
+      <Set Name="Mailbox" MinVersion="1.1" />
+    </Sets>
+  </Requirements>
+  <!-- Required by the base OfficeApp schema even for a command-only add-in with no taskpane —
+       these dimensions are never actually used since nothing here calls ShowTaskpane. -->
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit" />
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.3">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <FunctionFile resid="Commands.Url" />
+
+          <!-- Read surface (§3.1). The same "Favorik" menu button also appears in Outlook's
+               multi-select toolbar on hosts that support it — there is no distinct
+               manifest extension point for multi-select; commands.ts detects that case at
+               runtime (Office.context.mailbox.item is unresolvable) and shows the D1 message
+               instead of attempting a save. -->
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgReadGroup">
+                <Label resid="GroupLabel" />
+                <Control xsi:type="Menu" id="favorikMenuRead">
+                  <Label resid="MenuLabel" />
+                  <Supertip>
+                    <Title resid="MenuLabel" />
+                    <Description resid="MenuDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon-attachment-16" />
+                    <bt:Image size="32" resid="icon-attachment-32" />
+                    <bt:Image size="80" resid="icon-attachment-80" />
+                  </Icon>
+                  <Items>
+                    <Item id="favorikSaveItemRead">
+                      <Label resid="FavorikLabel" />
+                      <Supertip>
+                        <Title resid="FavorikLabel" />
+                        <Description resid="FavorikDescription" />
+                      </Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="icon-attachment-16" />
+                        <bt:Image size="32" resid="icon-attachment-32" />
+                        <bt:Image size="80" resid="icon-attachment-80" />
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction">
+                        <FunctionName>favorikSave</FunctionName>
+                      </Action>
+                    </Item>
+                  </Items>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+
+          <!-- Compose surface (§3.1) — same group/items, legacy exposed this on New Mail too. -->
+          <ExtensionPoint xsi:type="MessageComposeCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgComposeGroup">
+                <Label resid="GroupLabel" />
+                <Control xsi:type="Menu" id="favorikMenuCompose">
+                  <Label resid="MenuLabel" />
+                  <Supertip>
+                    <Title resid="MenuLabel" />
+                    <Description resid="MenuDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon-attachment-16" />
+                    <bt:Image size="32" resid="icon-attachment-32" />
+                    <bt:Image size="80" resid="icon-attachment-80" />
+                  </Icon>
+                  <Items>
+                    <Item id="favorikSaveItemCompose">
+                      <Label resid="FavorikLabel" />
+                      <Supertip>
+                        <Title resid="FavorikLabel" />
+                        <Description resid="FavorikDescription" />
+                      </Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="icon-attachment-16" />
+                        <bt:Image size="32" resid="icon-attachment-32" />
+                        <bt:Image size="80" resid="icon-attachment-80" />
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction">
+                        <FunctionName>favorikSave</FunctionName>
+                      </Action>
+                    </Item>
+                  </Items>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon-attachment-16" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-16.png" />
+        <bt:Image id="icon-attachment-32" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-32.png" />
+        <bt:Image id="icon-attachment-80" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-80.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="GroupLabel" DefaultValue="Attachment Saver" />
+        <bt:String id="MenuLabel" DefaultValue="Favorik" />
+        <bt:String id="MenuDescription" DefaultValue="Favorik actions" />
+        <bt:String id="FavorikLabel" DefaultValue="Favorik" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="FavorikDescription" DefaultValue="Save this email's attachments to a favorite project folder." />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
