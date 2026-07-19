@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xsi:type="MailApp">
+  <!-- DIAGNOSTIC ONLY — not part of the real Favorik add-in. Deliberately as close to Microsoft's
+       own known-working hello-world sample as possible, but hosted on Favorik's Pages repo and
+       using ExecuteFunction (Favorik's actual command model) instead of ShowTaskpane, to isolate
+       whether the persistent sideload failure is about hosting/content in general or something
+       in Favorik's manifest's structural complexity (Menu+Items, dual extension points, the
+       AppDomain-with-a-path bug). -->
+  <Id>c1a2b3d4-e5f6-4789-a0b1-c2d3e4f5a6b7</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Triad Fire Consultants</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Favorik Minimal Test" />
+  <Description DefaultValue="Diagnostic manifest only." />
+  <IconUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-32.png" />
+  <HighResolutionIconUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-80.png" />
+  <SupportUrl DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+  <AppDomains>
+    <AppDomain>https://iprosites.github.io</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Mailbox" />
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1" />
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit" />
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.3">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <FunctionFile resid="Commands.Url" />
+          <ExtensionPoint xsi:type="MessageComposeCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgComposeCmdGroup">
+                <Label resid="CommandsGroup.Label" />
+                <Control xsi:type="Button" id="favorikTestButton">
+                  <Label resid="TestButton.Label" />
+                  <Supertip>
+                    <Title resid="TestButton.Label" />
+                    <Description resid="TestButton.Description" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon-16" />
+                    <bt:Image size="32" resid="icon-32" />
+                    <bt:Image size="80" resid="icon-80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>openOptions</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon-16" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-16.png" />
+        <bt:Image id="icon-32" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-32.png" />
+        <bt:Image id="icon-80" DefaultValue="https://iprosites.github.io/favorik-addin-pages/assets/attachment-80.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Commands.Url" DefaultValue="https://iprosites.github.io/favorik-addin-pages/commands.html" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="CommandsGroup.Label" DefaultValue="Favorik Test" />
+        <bt:String id="TestButton.Label" DefaultValue="Test" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="TestButton.Description" DefaultValue="Diagnostic test button." />
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
